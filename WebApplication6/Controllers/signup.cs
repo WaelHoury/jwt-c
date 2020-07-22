@@ -18,6 +18,9 @@ namespace WebApplication6.Controllers
     {
         verify v = new verify();
         role r = new role();
+        phone p = new phone();
+        email e = new email();
+        deptid d = new deptid();
         insert ins = new insert();
         private readonly authenticationContext _context;
         public signupcontroller(authenticationContext context) => _context = context;
@@ -37,7 +40,10 @@ namespace WebApplication6.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, r.getrole(user.Username))
+                    new Claim(ClaimTypes.Role, r.getrole(user.Username)),
+                    new Claim(ClaimTypes.Email,user.Email),
+                    new Claim(ClaimTypes.MobilePhone,user.Phone.ToString()),
+                    new Claim(ClaimTypes.GroupSid,user.Departmentid.ToString())
                  };
                 var tokeOptions = new JwtSecurityToken(
                     issuer: "http://localhost:4200/",

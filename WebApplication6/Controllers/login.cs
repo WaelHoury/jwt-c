@@ -17,8 +17,18 @@ namespace WebApplication6.Controllers
     {
         verify v = new verify();
         role r = new role();
+        phone p = new phone();
+        email e = new email();
+        deptid d = new deptid();
+        getPass g = new getPass();
         private readonly authenticationContext _context;
         public logincontroller(authenticationContext context) => _context = context;
+        
+        [HttpGet]
+        public String getpass2([FromBody]user user1)
+        {
+            return g.getpass(user1.Username);
+        }
 
         [HttpPost]
         public IActionResult Login([FromBody]user user)
@@ -37,8 +47,11 @@ namespace WebApplication6.Controllers
                 var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, r.getrole(user.Username))
+                   new Claim(ClaimTypes.Name, user.Username),
+                   new Claim(ClaimTypes.Role, r.getrole(user.Username)),
+                   new Claim(ClaimTypes.Email,e.getemail(user.Username)),
+                   new Claim(ClaimTypes.MobilePhone,p.getphone(user.Username)),
+                   new Claim(ClaimTypes.GroupSid,d.getdeptid(user.Username))
                  };
                 var tokeOptions = new JwtSecurityToken(
                     issuer: "http://localhost:4200/",
